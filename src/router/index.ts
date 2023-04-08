@@ -89,6 +89,20 @@ export const constantRoutes: RouteRecordRaw[] = [
         ],
     },
     {
+        path: '/enterprise',
+        component: Layout,
+        hidden: true,
+        redirect: 'noRedirect',
+        children: [
+            {
+                path: 'request',
+                component: () => import('@/views/enterpriseAccess/index.vue'),
+                name: 'enterpriseRequest',
+                meta: { cnTitle: '租户访问申请', enTitle: 'Enterprise Access Request', icon: 'dashboard', affix: true }
+            }
+        ]
+    },
+    {
         path: '/user',
         component: Layout,
         hidden: true,

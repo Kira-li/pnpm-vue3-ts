@@ -6,6 +6,7 @@ import ParentView from '@/components/ParentView/index.vue';
 import InnerLink from '@/layout/components/InnerLink/index.vue';
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router';
+import { getUrlParam } from '@/utils/public';
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue');
@@ -56,14 +57,15 @@ const usePermissionStore = defineStore('permission', {
                     eRouter.hidden = false;
                     let sidebarRoutes = [];
                     const rewriteRoutes = filterAsyncRouter(rdata, false, true);
-                    const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
+                    const asyncRoutes:any = filterDynamicRoutes(dynamicRoutes);
                     rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true });
-                    router.addRoutes(asyncRoutes.router);
+                    console.log(asyncRoutes);
+                    router.addRoute(asyncRoutes);
                     if (getUrlParam('enterpriseId')) {
                         sidebarRoutes = allRoutes.filter(item => {
                             return item.name === 'EnterpriseAccess' && !item.hidden;
                         })[0].children;
-                        sidebarRoutes.forEach(item => {
+                        sidebarRoutes.forEach((item:any) => {
                             item.path = '/enterpriseAccess/' + item.path;
                         });
                         resolveMeauBreadcrubm(sidebarRoutes);
@@ -83,11 +85,11 @@ const usePermissionStore = defineStore('permission', {
                         path: eRouter.path,
                         redirect: 'noRedirect'
                     }];
-                    state.meauBreadcrubm = meauBreadcrubm;
+                    this.meauBreadcrubm = meauBreadcrubm;
                     this.setRoutes(rewriteRoutes);
                     this.setSidebarRouters(constantRoutes.concat(sidebarRoutes));
                     this.setDefaultRoutes(sidebarRoutes);
-                    this.setTopbarRoutes(defaultRoutes);
+                    this.setTopbarRoutes(sidebarRoutes);
                     resolve(rewriteRoutes);
                 });
             });
