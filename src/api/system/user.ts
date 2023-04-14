@@ -143,7 +143,7 @@ export function businessSelect() {
 }
 
 // 查看账号关联租户
-export function selectRefEnterprise(userId:string) {
+export function selectRefEnterprise(userId:any) {
     return request({
         url: '/system/user/selectRefEnterprise/' + userId,
         method: 'get'

@@ -66,9 +66,13 @@ export const constantRoutes: RouteRecordRaw[] = [
         hidden: true,
     },
     {
-        path: '/:pathMatch(.*)*',
+        path: '/404',
         component: () => import('@/views/error/404.vue'),
         hidden: true,
+    },
+    {
+        path: '/:catchAll(.*)',
+        redirect: '/404'
     },
     {
         path: '/401',
@@ -78,13 +82,13 @@ export const constantRoutes: RouteRecordRaw[] = [
     {
         path: '',
         component: Layout,
-        redirect: '/index',
+        redirect: 'enterprise/request',
         children: [
             {
-                path: '/index',
+                path: 'index',
                 component: () => import('@/views/index.vue'),
                 name: 'Index',
-                meta: { title: '首页', icon: 'dashboard', affix: true },
+                meta: { cnTitle: '我的任务', enTitle: 'My Task', icon: 'dashboard', affix: true },
             },
         ],
     },

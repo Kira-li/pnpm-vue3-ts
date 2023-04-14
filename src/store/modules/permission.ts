@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import auth from '@/plugins/auth';
 import router, { constantRoutes, dynamicRoutes } from '@/router';
 import { getRouters } from '@/api/menu';
@@ -6,7 +7,7 @@ import ParentView from '@/components/ParentView/index.vue';
 import InnerLink from '@/layout/components/InnerLink/index.vue';
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router';
-import { getUrlParam } from '@/utils/public';
+import { getUrlParam, addRouterMeauName } from '@/utils/public';
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue');
@@ -58,8 +59,6 @@ const usePermissionStore = defineStore('permission', {
                     let sidebarRoutes = [];
                     const rewriteRoutes = filterAsyncRouter(rdata, false, true);
                     const asyncRoutes:any = filterDynamicRoutes(dynamicRoutes);
-                    rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true });
-                    console.log(asyncRoutes);
                     router.addRoute(asyncRoutes);
                     if (getUrlParam('enterpriseId')) {
                         sidebarRoutes = allRoutes.filter(item => {
@@ -87,9 +86,10 @@ const usePermissionStore = defineStore('permission', {
                     }];
                     this.meauBreadcrubm = meauBreadcrubm;
                     this.setRoutes(rewriteRoutes);
-                    this.setSidebarRouters(constantRoutes.concat(sidebarRoutes));
+                    this.setSidebarRouters(addRouterMeauName(constantRoutes.concat(sidebarRoutes), Cookies.get('language') === 'en' ? 'enTitle' : 'cnTitle'));
                     this.setDefaultRoutes(sidebarRoutes);
                     this.setTopbarRoutes(sidebarRoutes);
+                    this.setSidebarRouters;
                     resolve(rewriteRoutes);
                 });
             });

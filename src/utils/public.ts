@@ -260,3 +260,18 @@ export function getUrlParam (name: string) {
     if(r != null) return unescape(r[2]);
     return null;
 }
+
+// 路由添加meauName
+export function addRouterMeauName(data:any, attrName:string) {
+    data.forEach((item:any) => {
+        if (item.meta) item.meauName = item.meta[attrName];
+        if (item.children) {
+            item.children.forEach((cot:any) => {
+                if (cot.meta) cot.meauName = cot.meta[attrName];
+                if (cot.name === 'Index') item.meauName = cot.meta[attrName];
+                if (cot.children) addRouterMeauName(cot.children, attrName);
+            });
+        }
+    });
+    return data;
+}
